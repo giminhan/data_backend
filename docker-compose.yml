@@ -24,12 +24,12 @@ services:
   backend:
     container_name: data-django
     build: 
-      context: ./data
+      context: ./backend
       dockerfile: Dockerfile
-    command: gunicorn homepricestats.wsgi --bind 0.0.0.0:8000
+    command: gunicorn Cursive.wsgi --bind 0.0.0.0:8000
     volumes:
-      - ./data/:/data
-      - static-volume:/data/.static_root
+      - ./backend/:/backend
+      - static-volume:/backend/.static_root
     env_file:
       - ./.env
     ports:
@@ -47,7 +47,7 @@ services:
       - "8080:8080"
     volumes:
       - ./nginx/nginx-setup.conf:/etc/nginx/con.f/nginx-setup.conf
-      - static-volume:/data/.static_root/
+      - static-volume:/backend/.static_root/
 
     depends_on:
       - backend
