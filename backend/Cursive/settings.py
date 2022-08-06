@@ -47,6 +47,15 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": (
+        'rest_framework.permission.IsAuthenticated',
+        'rest_framework.permission.IsAdminUser',
+        'rest_framework.permission.AllowAny'
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.renders.JSONRenderer',
+        'rest_framework.renders.BrowsableAPIRenderer'  
+    ),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         'rest_framework_simplejwt.authentication.JWTAuthentication'
     )
