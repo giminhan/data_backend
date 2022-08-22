@@ -1,13 +1,11 @@
-django
 numpy
 Pillow
 asgiref
 django
 djangorestframework
 django-ninja
-tensorflow==2.8.0
-keras
-torch
+djangorestframework-simplejwt
+
 libsass 
 django-compressor 
 django-sass-processor

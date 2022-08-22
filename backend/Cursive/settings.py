@@ -30,7 +30,7 @@ SECRET_KEY = mysetting.SCERET["SCERET_KEY"]
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+CSRF_TRUSTED_ORIGINS = ['http://0.0.0.0:8080']
 
 # Application definition
 
@@ -148,9 +148,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/.static_root/'
-STATIC_DIR = os.path.join(BASE_DIR, '.static_root')
-STATIC_ROOT = os.path.join(ROOT_DIR, '.static_root')
+STATIC_URL = '/staticfile/'
+STATIC_DIR = os.path.join(BASE_DIR, 'staticfile')
+STATIC_ROOT = os.path.join(ROOT_DIR, 'staticfile')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

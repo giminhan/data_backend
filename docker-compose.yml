@@ -1,9 +1,25 @@
 version: '3.9'
 
 services:
+  backend:
+    container_name: data-django
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: gunicorn Cursive.wsgi --bind 0.0.0.0:8000
+    volumes:
+      - ./backend/:/backend
+      - static-volume:/backend/staticfile/
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - sql
+
   sql:
     container_name: data-sql
-    image: mysql
+    image: mysql:latest
     ports:
       - "3307:3306"
     env_file:
@@ -19,42 +35,24 @@ services:
       - --character-set-server=utf8mb4
       - --lower_case_table_names=1
     volumes:
-      - .sqlVolume:/var/lib/mysql/
-
-  backend:
-    container_name: data-django
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
-    command: gunicorn Cursive.wsgi --bind 0.0.0.0:8000
-    volumes:
-      - ./backend/:/backend
-      - static-volume:/backend/.static_root
-    env_file:
-      - ./.env
-    ports:
-      - "8000:8000"
-    environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - .sqlVolume:/var/lib/mysql
 
   ngnix:
-    container_name: data-nginx
     build: 
       context: ./nginx
       dockerfile: Dockerfile
+    container_name: data-nginx
     ports:
       - "8080:8080"
     volumes:
       - ./nginx/nginx-setup.conf:/etc/nginx/con.f/nginx-setup.conf
-      - static-volume:/backend/.static_root/
+      - static-volume:/backend/staticfile/
 
     depends_on:
       - backend
 
-
 volumes:
-  mysql:
+  sql:
   backend:
   build_file:
   static-volume:
