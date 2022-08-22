@@ -9,7 +9,7 @@ services:
     command: gunicorn Cursive.wsgi --bind 0.0.0.0:8000
     volumes:
       - ./backend/:/backend
-      - static-volume:/backend/staticfile/
+      - static-volume:/staticfile/
     env_file:
       - ./.env
     ports:
@@ -46,7 +46,7 @@ services:
       - "8080:8080"
     volumes:
       - ./nginx/nginx-setup.conf:/etc/nginx/con.f/nginx-setup.conf
-      - static-volume:/backend/staticfile/
+      - static-volume:/staticfile/
 
     depends_on:
       - backend
