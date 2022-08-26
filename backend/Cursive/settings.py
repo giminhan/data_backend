@@ -12,19 +12,18 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from datetime import timedelta
 import os
-import mysetting
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = os.path.dirname(BASE_DIR)
-
+AUTH_USER_MODEL = 'dashboard.User'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = mysetting.SCERET["SCERET_KEY"]
+SECRET_KEY = os.getenv("DJANGO_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dashboard.apps.DashboardConfig',
     'rest_framework',
-    'rest_framework_simplejwt',
 ]
 
 REST_FRAMEWORK = {
@@ -95,7 +93,16 @@ WSGI_APPLICATION = 'Cursive.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = mysetting.DATABASES
+DATABASES = {
+        'default' : {
+        'ENGINE': 'django.db.backends.mysql',    
+        'NAME': os.getenv('DB_DATABASE'),                  
+        'USER': os.getenv('DB_USERNAME'),                          
+        'PASSWORD': os.getenv('DB_ROOT_PASSWORD'),                  
+        'HOST': os.getenv('DB_HOST'),                     
+        'PORT': os.getenv('DB_PORT')                          
+    }
+}
 
 
 # Password validation
@@ -115,23 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-# JWT SETTING
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUDIENCE': None,
-    'ISSUER': None,
-    'JWK_URL': None,
-    'LEEWAY': 0,
-
-    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

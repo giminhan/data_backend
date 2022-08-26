@@ -1,25 +1,6 @@
 version: '3.9'
 
 services:
-  backend:
-    container_name: data-django
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
-    command: gunicorn Cursive.wsgi --bind 0.0.0.0:8000
-    volumes:
-      - ./backend/:/backend
-      - static-volume:/staticfile/
-    env_file:
-      - ./.env
-    environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-    ports:
-      - "8000:8000"
-    depends_on:
-      - sql
-
   sql:
     container_name: data-sql
     image: mysql:latest
@@ -39,6 +20,22 @@ services:
       - --lower_case_table_names=1
     volumes:
       - .sqlVolume:/var/lib/mysql
+ 
+  backend:
+    container_name: data-django
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: gunicorn Cursive.wsgi --bind 0.0.0.0:8000
+    volumes:
+      - ./backend/:/backend
+      - static-volume:/staticfile/
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - sql
 
   ngnix:
     build: 

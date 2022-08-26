@@ -19,3 +19,4 @@ psycopg2-binary
 sqlparse
 mysqlclient
 mongoengine
+argon2-cffi
